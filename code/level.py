@@ -24,7 +24,7 @@ class Level:
         self.collision_sprites = pygame.sprite.Group() # keep track what sprites can be collieded
         self.tree_sprites = pygame.sprite.Group()
         self.interaction_sprites = pygame.sprite.Group()
-        self.soil_layer = SoilLayer(self.all_sprites, self.collision_sprites)
+        #self.soil_layer = SoilLayer(self.all_sprites, self.collision_sprites)
 
         self.setup()
         self.overlay = Overlay(self.player)
@@ -38,7 +38,6 @@ class Level:
         # Sky
         self.rain = Rain(self.all_sprites)
         self.raining = randint(0,10) > 6
-        self.soil_layer.raining = self.raining
         self.sky = Sky()
 
         # shop
@@ -56,65 +55,72 @@ class Level:
     def setup(self):
         tmx_data = load_pygame('../data/map.tmx')
 
-        npc_layer = tmx_data.get_layer_by_name('npc')
+        #npc_layer = tmx_data.get_layer_by_name('npc')
 
         # house
-        for layer in ['HouseFloor', 'HouseFurnitureBottom']:  # sequence is important
-            for x, y, surf in tmx_data.get_layer_by_name(layer).tiles():
-                Generic((x * TILE_SIZE, y * TILE_SIZE), surf, self.all_sprites, LAYERS['house bottom'])
-
-        for layer in ['HouseWalls', 'HouseFurnitureTop']:
-            for x, y, surf in tmx_data.get_layer_by_name(layer).tiles():
-                Generic((x * TILE_SIZE, y * TILE_SIZE), surf, self.all_sprites, LAYERS['main'])
-
-        # Fence
-        for x, y, surf in tmx_data.get_layer_by_name('Fence').tiles():
-            Generic((x * TILE_SIZE, y * TILE_SIZE), surf, [self.all_sprites, self.collision_sprites])
-
-        # trees
-        for obj in tmx_data.get_layer_by_name('Trees'):
-            Tree((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites, self.tree_sprites], obj.name, self.player_add)
-
-        # water
-        water_frames = import_folder('../graphics/water')
-        for x, y, surf in tmx_data.get_layer_by_name('Water').tiles():
-            Water((x * TILE_SIZE, y * TILE_SIZE), water_frames, self.all_sprites)
-
-        # wildflowers
-        for obj in tmx_data.get_layer_by_name('Decoration'):   # retrieves a specific layer from the Tiled map data
-            WildFlower((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites])
-
-        # collision tiles, set in tiles
-        for x, y, surf in tmx_data.get_layer_by_name('Collision').tiles():
-            Generic((x*TILE_SIZE, y*TILE_SIZE), pygame.Surface((TILE_SIZE, TILE_SIZE)), self.collision_sprites)
-
-        # npc
-        for obj in tmx_data.get_layer_by_name('npc'):
-            if obj.name == 'npc':
-                Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, 'npc')
-
-        # player
+        # for layer in ['HouseFloor', 'HouseFurnitureBottom']:  # sequence is important
+        #     for x, y, surf in tmx_data.get_layer_by_name(layer).tiles():
+        #         Generic((x * TILE_SIZE, y * TILE_SIZE), surf, self.all_sprites, LAYERS['house bottom'])
+        #
+        # for layer in ['HouseWalls', 'HouseFurnitureTop']:
+        #     for x, y, surf in tmx_data.get_layer_by_name(layer).tiles():
+        #         Generic((x * TILE_SIZE, y * TILE_SIZE), surf, self.all_sprites, LAYERS['main'])
+        #
+        # # Fence
+        # for x, y, surf in tmx_data.get_layer_by_name('Fence').tiles():
+        #     Generic((x * TILE_SIZE, y * TILE_SIZE), surf, [self.all_sprites, self.collision_sprites])
+        #
+        # # trees
+        # for obj in tmx_data.get_layer_by_name('Trees'):
+        #     Tree((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites, self.tree_sprites], obj.name, self.player_add)
+        #
+        # # water
+        # water_frames = import_folder('../graphics/water')
+        # for x, y, surf in tmx_data.get_layer_by_name('Water').tiles():
+        #     Water((x * TILE_SIZE, y * TILE_SIZE), water_frames, self.all_sprites)
+        #
+        # # wildflowers
+        # for obj in tmx_data.get_layer_by_name('Decoration'):   # retrieves a specific layer from the Tiled map data
+        #     WildFlower((obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites])
+        #
+        # # collision tiles, set in tiles
+        # for x, y, surf in tmx_data.get_layer_by_name('Collision').tiles():
+        #     Generic((x*TILE_SIZE, y*TILE_SIZE), pygame.Surface((TILE_SIZE, TILE_SIZE)), self.collision_sprites)
+        #
+        # # npc
+        # for obj in tmx_data.get_layer_by_name('npc'):
+        #     if obj.name == 'npc':
+        #         Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, 'npc')
+        #
+        # # player
+        # for obj in tmx_data.get_layer_by_name('Player'): # set start point
+        #     if obj.name == 'Start':
+        #         self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites, self.tree_sprites, self.interaction_sprites, self.soil_layer, self.toggle_shop)
+        #     if obj.name == 'Bed':
+        #         Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, 'Bed')
+        #     if obj.name == 'Trader':
+        #         Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, 'Trader')
+        #
+        #
+        #
+        # # Load cows from the CowLayer in the map
+        #         cow_frames = import_folder('../graphics/cow')  # Load cow animation frames
+        #         for x, y, surf in tmx_data.get_layer_by_name('CowLayer').tiles():
+        #             cow = Cow((x * TILE_SIZE, y * TILE_SIZE), cow_frames, self.all_sprites)
+        #             cow.start_moving()  # Start the cow's movement
         for obj in tmx_data.get_layer_by_name('Player'): # set start point
             if obj.name == 'Start':
-                self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites, self.tree_sprites, self.interaction_sprites, self.soil_layer, self.toggle_shop)
-            if obj.name == 'Bed':
-                Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, 'Bed')
-            if obj.name == 'Trader':
-                Interaction((obj.x, obj.y), (obj.width, obj.height), self.interaction_sprites, 'Trader')
-
-
-
-        # Load cows from the CowLayer in the map
-                cow_frames = import_folder('../graphics/cow')  # Load cow animation frames
-                for x, y, surf in tmx_data.get_layer_by_name('CowLayer').tiles():
-                    cow = Cow((x * TILE_SIZE, y * TILE_SIZE), cow_frames, self.all_sprites)
-                    cow.start_moving()  # Start the cow's movement
-
-
-        Generic(
-            pos=(0, 0),
-            surf=pygame.image.load('../graphics/world/ground.png').convert_alpha(),
-            groups=self.all_sprites, z=LAYERS['ground'])
+                self.player = Player((obj.x, obj.y), self.all_sprites,self.collision_sprites, self.tree_sprites, self.interaction_sprites, self.toggle_shop)
+        tmx_data = load_pygame('../data/map.tmx')
+        z = LAYERS['main']
+        for layer in tmx_data.visible_layers:  # sequence is important
+            if hasattr(layer, 'data'):
+                for x, y, surf in layer.tiles():
+                    Generic((x * TILE_SIZE, y * TILE_SIZE), surf, self.all_sprites, z)
+        # Generic(
+        #     pos=(0, 0),
+        #     surf=pygame.image.load('../graphics/environment/Hogwarts_Floors.png').convert_alpha(),
+        #     groups=self.all_sprites, z=LAYERS['ground'])
 
     def reset(self):
         # sky
@@ -150,7 +156,6 @@ class Level:
             self.menu.update()
         else:
             self.all_sprites.update(dt)
-            self.plant_collisions()
 
         """weather"""
         self.overlay.display()
@@ -229,20 +234,6 @@ class Level:
         self.player.item_inventory[item] += 1
         self.success.play()
 
-    def plant_collisions(self):
-        if self.soil_layer.plant_sprites:
-            for plant in self.soil_layer.plant_sprites.sprites():
-                # Check if plant is harvestable
-                if plant.age >= plant.max_age and plant.rect.colliderect(self.player.hitbox):
-                    # Add item to player
-                    self.player_add(plant.plant_type)
-
-                    # Generate particle effect
-                    Particle(plant.rect.topleft, plant.image, self.all_sprites, z=LAYERS['main'])
-
-                    # Remove plant from soil and kill the sprite
-                    self.soil_layer.grid[plant.rect.centery // TILE_SIZE][plant.rect.centerx // TILE_SIZE].remove('P')
-                    plant.kill()
 
     def toggle_shop(self):
         self.shop_active = not self.shop_active

@@ -94,7 +94,7 @@ class SoilLayer:
         # print(self.soil_surf)
         self.water_surfs = import_folder('../graphics/soil_water')
 
-        self.create_soil_grid()
+        #self.create_soil_grid()
         self.create_hit_rects()  # need call!!
 
         # sounds

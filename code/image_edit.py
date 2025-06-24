@@ -28,7 +28,7 @@ def save_image(img, output_path):
 # Step 2: Remove white background
 def remove_white_background(input_path,output_path):
     img = Image.open(input_path).convert("RGBA")
-    img= img.resize((172,124), Image.Resampling.LANCZOS)
+    img= img.resize((512,512), Image.Resampling.LANCZOS)
     datas = img.getdata()
 
     new_data = []
@@ -73,8 +73,8 @@ def vectorize_image(img, mask):
 if __name__ == "__main__":
     # img=load_and_reshape_image("../graphics/character/down/down0.jpeg")
     # img,mask=remove_white_background(img)
-    filepath="../graphics/character/down/down0.jpeg"
-    outpath="../graphics/character/down/down0.jpeg"
+    filepath="../graphics/character/down/test.png"
+    outpath="../graphics/character/down/test_vector.png"
     remove_white_background(filepath,outpath)
     #img=vectorize_image(img,mask)
     #show_image(img)

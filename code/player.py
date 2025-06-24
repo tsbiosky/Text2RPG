@@ -5,7 +5,7 @@ from timer import Timer
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, group, collision_sprites, tree_sprites, interaction, soil_layer, toggle_shop):
+    def __init__(self, pos, group, collision_sprites, tree_sprites, interaction, toggle_shop):
         super().__init__(group)
         #  print("Player __init__ called")
 
@@ -32,7 +32,7 @@ class Player(pygame.sprite.Sprite):
         self.tree_sprites = tree_sprites
         self.interaction = interaction
         self.sleep = False
-        self.soil_layer = soil_layer
+        #self.soil_layer = soil_layer
         self.toggle_shop = toggle_shop
 
         # timers
@@ -77,18 +77,21 @@ class Player(pygame.sprite.Sprite):
         # print(self.selected_tool)
         # print('use tool')
         if self.selected_tool == 'hoe':
-            self.soil_layer.get_hit(self.target_pos)
+            #self.soil_layer.get_hit(self.target_pos)
+            pass
         if self.selected_tool == 'axe':
             for tree in self.tree_sprites.sprites():
                 if tree.rect.collidepoint(self.target_pos):
                     tree.damage()
         if self.selected_tool == 'water':
-            self.soil_layer.water(self.target_pos)
+            #self.soil_layer.water(self.target_pos)
+            pass
             self.watering.play()
 
     def use_seed(self):
         if self.seeds_inventory[self.selected_seed] > 0:
-            self.soil_layer.plant_seed(self.target_pos, self.selected_seed)
+            #self.soil_layer.plant_seed(self.target_pos, self.selected_seed)
+            pass
             self.seeds_inventory[self.selected_seed] -= 1
 
     def import_assets(self):
